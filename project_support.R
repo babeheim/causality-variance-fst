@@ -6,7 +6,6 @@ library(dplyr)
 
 source("R/color_functions.R")
 source("R/sim_functions.R")
-source("R/sim_traits.R")
 source("R/plot_functions.R")
 source("R/math_functions.R")
 
