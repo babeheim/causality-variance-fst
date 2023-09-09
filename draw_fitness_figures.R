@@ -4,12 +4,12 @@ rm(list = ls())
 source("project_support.R")
 
 k <- 0.6 # equilibrium p-tilde
-# best to set at 0.5
+# note that A is only the GBT in invisible hand if k > 0.5
 
 text_size <- 0.7
 
-xlabs <- "group $j$ frequency of \\textcolor[HTML]{00AFB9}{A}, $p_j$"
-ylabs <- "individual fitness, $w_{i,j}$"
+xlabs <- "group $j$ frequency of \\textcolor[HTML]{00AFB9}{A}, $x_j$"
+ylabs <- "individual fitness, $w_{ij}$"
 
 
 
@@ -72,20 +72,22 @@ mtext("$\\overbrace{\\hspace{2cm}}$", side = 2, line = 0, at = wt - k*n/2)
 mtext("$(1-k)m$", side = 4, line = 0.5, at = wt + (1-k)*m/2, las = 0)
 mtext("$\\underbrace{\\hspace{1.0cm}}$", side = 4, line = -0.7, at = wt + (1-k)*m/2)
 
-text(0.25, wt + (0.25 - k) * n + 0.05, labels = "$x_{i,j}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * n + 0.05, labels = "$x_{ij}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
 
-text(0.25, wt + (0.25 - k) * m + 0.05, labels = "$x_{i,j}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * m + 0.05, labels = "$x_{ij}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
 
 dev.off()
 
 
 
 
-tikz("figures/stagHuntPayoffs.tex", height = 3, width = 3)
+tikz("figures/stagHuntPayoffs.tex", height = 3, width = 6)
+
+par(mfrow = c(1, 2))
 
 par(mar = c(5.1, 4.1, 4.1, 2.1))
 
-m <- 1
+m <- 1 # value is arbitrary so long as its positive
 n <- 0
 wt <- 0 + m * k # where w0 = 0
 
@@ -110,21 +112,33 @@ mtext("$\\overbrace{\\hspace{2cm}}$", side = 2, line = 0, at = wt - k*m/2)
 mtext("$(1-k)m$", side = 4, line = 0.5, at = wt + (1-k)*m/2, las = 0)
 mtext("$\\underbrace{\\hspace{1.5cm}}$", side = 4, line = -0.7, at = wt + (1-k)*m/2)
 
-text(0.25, wt + (0.25 - k) * n + 0.05, labels = "$x_{i,j}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * n + 0.05, labels = "$x_{ij}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
 
-text(0.25, wt + (0.25 - k) * m + 0.05, labels = "$x_{i,j}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * m + 0.05, labels = "$x_{ij}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+
+
+par(mar = c(0, 0, 0, 0))
+
+plot_circular_regions()
+
+beta <- 0
+rarrow(atan(beta), r = 1.2, length = 0.1)
+text(xy(atan(beta) + 0.06, 0.75), labels = "Stag Hunt", srt = calc_srt(beta), cex = text_size)
+
 
 dev.off()
 
 
 
-tikz("figures/hawkDovePayoffs.tex", height = 3, width = 3)
+tikz("figures/hawkDovePayoffs.tex", height = 3, width = 6)
+
+par(mfrow = c(1, 2))
 
 par(mar = c(5.1, 4.1, 4.1, 2.1))
 
 k <- 0.6
-n <- 1
-m <- n * (1 - k) / (2 - k)
+m <- 1
+n <- m * (2 - k) / (1 - k)
 wt <- 0 + m * k # where w0 = 0
 
 a <- wt + (1 - k) * m
@@ -149,15 +163,29 @@ mtext("$\\overbrace{\\hspace{2cm}}$", side = 2, line = 0, at = wt - k*n/2)
 mtext("$(1-k)m$", side = 4, line = 0.5, at = wt + (1-k)*m/2, las = 0)
 mtext("$\\underbrace{\\hspace{0.1cm}}$", side = 4, line = -0.7, at = wt + (1-k)*m/2)
 
-text(0.25, wt + (0.25 - k) * n - 0.06, labels = "$x_{i,j}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * m - 0.2, labels = "$x_{ij}=1$", col = A_col, srt = atan(0.25 * m) * 360/(2*pi))
 
-text(0.25, wt + (0.25 - k) * m - 0.05, labels = "$x_{i,j}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * n - 0.2, labels = "$x_{ij}=0$", col = B_col, srt = atan(0.2 * n) * 360/(2*pi))
+
+
+par(mar = c(0, 0, 0, 0))
+
+plot_circular_regions()
+
+draw_arc(atan2(2-k, 1-k), 0.3, col = gray(0.3, 0.7))
+text(0.3, 0.22, "$\\theta$")
+
+beta <- (2 - k) / (1 - k)
+rarrow(atan(beta), r = 1.2, length = 0.1)
+text(xy(atan(beta) + 0.06, 0.70), labels = "Hawk-Dove", srt = calc_srt(beta), cex = text_size)
 
 dev.off()
 
 
 
-tikz("figures/pureCoordinationPayoffs.tex", height = 3, width = 3)
+tikz("figures/pureCoordinationPayoffs.tex", height = 3, width = 6)
+
+par(mfrow = c(1, 2))
 
 par(mar = c(5.1, 4.1, 4.1, 2.1))
 
@@ -188,21 +216,36 @@ mtext("$\\overbrace{\\hspace{2cm}}$", side = 2, line = 0, at = wt - k*m/2)
 mtext("$(1-k)n$", side = 4, line = 0.5, at = wt + (1-k)*n/2, las = 0)
 mtext("$\\underbrace{\\hspace{1.0cm}}$", side = 4, line = -0.7, at = wt + (1-k)*n/2)
 
-text(0.25, wt + (0.25 - k) * n + 0.07, labels = "$x_{i,j}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * n + 0.07, labels = "$x_{ij}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
 
-text(0.25, wt + (0.25 - k) * m + 0.07, labels = "$x_{i,j}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * m + 0.07, labels = "$x_{ij}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+
+
+par(mar = c(0, 0, 0, 0))
+
+plot_circular_regions()
+
+draw_arc(atan2(-(1-k), k), 0.3, col = gray(0.3, 0.7))
+text(0.35, -0.1, "$\\theta$")
+
+beta <- -(1-k)/k
+text(xy(atan(beta) - 0.10, 0.62), labels = "Pure Coordination", srt = calc_srt(beta), cex = text_size)
+rarrow(atan(beta), r = 1.2, length = 0.1)
+
 
 dev.off()
 
 
 
-tikz("figures/invisibleHandPayoffs.tex", height = 3, width = 3)
+tikz("figures/invisibleHandPayoffs.tex", height = 3, width = 6)
+
+par(mfrow = c(1, 2))
 
 par(mar = c(5.1, 4.1, 4.1, 2.1))
 
 k <- 0.6
-n <- 1 
-m <- -n * (1 - k) / k
+m <- -1 
+n <- -m * k / (1 - k)
 wt <- 0 + m * k # where w0 = 0
 
 a <- wt + (1 - k) * m
@@ -227,11 +270,26 @@ mtext("$\\overbrace{\\hspace{2cm}}$", side = 2, line = 0, at = wt - k*n/2)
 mtext("$(1-k)m$", side = 4, line = 0.5, at = wt + (1-k)*m/2, las = 0)
 mtext("$\\underbrace{\\hspace{1.0cm}}$", side = 4, line = -0.7, at = wt + (1-k)*m/2)
 
-text(0.25, wt + (0.25 - k) * n + 0.05, labels = "$x_{i,j}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * m + 0.1, labels = "$x_{ij}=1$", col = A_col, srt = atan(0.5 * m) * 360/(2*pi))
 
-text(0.25, wt + (0.25 - k) * m + 0.05, labels = "$x_{i,j}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+
+text(0.25, wt + (0.25 - k) * n + 0.1, labels = "$x_{ij}=0$", col = B_col, srt = atan(0.5 * n) * 360/(2*pi))
+
+
+par(mar = c(0, 0, 0, 0))
+
+plot_circular_regions()
+
+draw_arc(atan2(k, -(1-k)), 0.3, col = gray(0.3, 0.7))
+text(0.19, 0.31, "$\\theta$")
+
+beta <- (-k / (1 - k))
+rarrow(pi + atan(beta), r = 1.2, length = 0.1)
+text(xy(pi + atan(beta) - 0.07, 0.65), labels = "Invisible Hand", srt = calc_srt(beta), cex = text_size)
 
 dev.off()
+
+
 
 
 
@@ -268,86 +326,15 @@ mtext("$\\overbrace{\\hspace{2cm}}$", side = 2, line = 0, at = wt - k*n/2)
 mtext("$(1-k)m$", side = 4, line = 0.5, at = wt + (1-k)*m/2, las = 0)
 mtext("$\\underbrace{\\hspace{1.0cm}}$", side = 4, line = -0.7, at = wt + (1-k)*m/2)
 
-text(0.25, wt + (0.25 - k) * n + 0.05, labels = "$x_{i,j}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * n + 0.05, labels = "$x_{ij}=0$", col = B_col, srt = atan(0.75 * n) * 360/(2*pi))
 
-text(0.25, wt + (0.25 - k) * m + 0.05, labels = "$x_{i,j}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
+text(0.25, wt + (0.25 - k) * m + 0.05, labels = "$x_{ij}=1$", col = A_col, srt = atan(0.75 * m) * 360/(2*pi))
 
 
 
 par(mar = c(0, 0, 0, 0))
 
-plot(NULL, xlim = c(-1.25, 1.25), ylim = c(-1.25, 1.25), axes = FALSE, frame.plot = FALSE, xlab = "", ylab = "")
-
-# draw a circle
-# xs <- seq(-1, 1, by = 0.001)
-# ys <- sqrt(0.9^2 - xs^2)
-# points(xs, ys, type = "l", col = light)
-# points(xs, -ys, type = "l", col = light)
-
-
-cat("plot colored sectors\n")
-
-# color sector II
-xc <- seq(-1, 0, by = 0.001)
-yc <- sqrt(1 - xc^2)
-xl <- c(0, 0, -1)
-yl <- c(1, 0, 0)
-polygon(c(xc, xl), c(yc, yl), col = complementary_col, border = NA)
-
-# color sector IV
-xc <- seq(1, 0, by = -0.001)
-yc <- -sqrt(1 - xc^2)
-xl <- c(0, 0, 1)
-yl <- c(-1, 0, 0)
-polygon(c(xc, xl), c(yc, yl), col = coordination_col, border = NA)
-
-# color sector I, bottom
-xc <- seq(1, sqrt(2)/2, length.out = 300)
-yc <- sqrt(1 - xc^2)
-xl <- seq(sqrt(2)/2, 0, length.out = 10)
-polygon(c(xc, xl), c(yc, xl), col = surplus_col, border = NA)
-
-# color sector III, bottom
-xc <- -seq(0, sqrt(2)/2, length.out = 300)
-yc <- -sqrt(1 - xc^2)
-xl <- -seq(sqrt(2)/2, 0, length.out = 10)
-polygon(c(xc, xl), c(yc, xl), col = surplus_col, border = NA)
-
-# color sector III, top
-xc <- -seq(1, sqrt(2)/2, length.out = 300)
-yc <- -sqrt(1 - xc^2)
-xl <- -seq(sqrt(2)/2, 0, length.out = 10)
-polygon(c(xc, xl), c(yc, xl), col = competitive_col, border = NA)
-
-# color sector I, top
-xc <- seq(0, sqrt(2)/2, length.out = 300)
-yc <- sqrt(1 - xc^2)
-xl <- seq(sqrt(2)/2, 0, length.out = 10)
-polygon(c(xc, xl), c(yc, xl), col = competitive_col, border = NA)
-
-# add mask for B-half
-# slope: -(1 - k) / k
-thetas <- atan2((1 - k), -k) + seq(0, pi, length.out = 100)
-ys <- sin(thetas)
-xs <- cos(thetas)
-polygon(xs, ys, col = col_alpha("white", 0.7), border = NA)
-
-
-
-# radii for each game label
-
-cat("draw axis labels\n")
-
-text(xy(pi/2, 0.79), labels = "$n \\rightarrow$", pos = 4, srt = 90, cex = text_size)
-text(xy(0, 0.85), labels = "$m \\rightarrow$", pos = 1, cex = text_size)
-
-# beta <- 1
-# rline(atan(beta), r = 1.1, lty = 3)
-# rline(pi + atan(beta), r = 1.1, lty = 3)
-
-beta <- -(1 - k) / k
-rline(atan(beta), 2, col = gray(0.3, 0.3))
-rline(pi + atan(beta), 2, col = gray(0.3, 0.3))
+plot_circular_regions()
 
 beta <- -(1 - k) / k
 text(xy(atan(beta) + 0.07, 0.62), labels = "Pure Coordination", srt = calc_srt(beta), cex = text_size)

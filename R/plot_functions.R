@@ -1,4 +1,23 @@
 
+
+draw_arc <- function(theta, r, ...) {
+  x_start <- r
+  y_start <- 0
+  x_stop <- cos(theta) * r
+  y_stop <- sin(theta) * r
+
+  xs <- seq(x_start, x_stop, length.out = 100)
+  if (y_stop < 0) {
+    ys <- -sqrt(r^2 - xs^2)
+  } else {
+    ys <- sqrt(r^2 - xs^2)
+  }
+
+  points(xs, ys, type = "l", ...)
+
+}
+
+
 calc_srt <- function(slope, adj = 0.0) {
   atan(slope) * 360 / (2*pi) + adj
 }

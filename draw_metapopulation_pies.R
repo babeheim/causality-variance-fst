@@ -33,11 +33,6 @@ for (j in 1:nrow(dat)) {
     mtext("$\\overbrace{\\hspace{3.2cm}}$", 3, -2.8, cex = 1.0)
   }
 
-# #55E1FF blue i like, darker: 30CAEB
-# #FF8A89 red i like, darker: E57C7B
-# #FFCE86 yello i like
-# #00AFB9 gren li ke
-
   light <- "#FF8A89"
   light_border <- "#FF8A89"
   dark <- "#55E1FF"

@@ -3,17 +3,17 @@ rm(list = ls())
 
 source("project_support.R")
 
-my_xlab <- "frequency of A, $\\overline{x}$"
+my_xlab <- "frequency of $A$, $\\overline{x}$"
 my_ylab <- "$F_{ST}$"
 
 k <- 0.6 # equilibrium p-tilde
-# if k < 0.5, strategy A is not the group-beneficial strategy (undesireable)
+# note that A is GBT in invisible hand only if k > 0.5
 
 zero_line_col <- col_alpha("black", 0.5)
 
 
 
-tikz("figures/prisonersDilemmaPhaseDiagram.tex", height = 4, width = 4)
+tikz("figures/prisonersDilemmaContourDiagram.tex", height = 4, width = 4)
 
 layout(mat = matrix(c(0, 1, 2), 1, 3, byrow = TRUE), widths = c(1,5,1), heights = c(5, 5, 5), respect = TRUE)
 
@@ -88,7 +88,7 @@ dev.off()
 
 
 
-tikz("figures/stagHuntPhaseDiagram.tex", height = 4, width = 4)
+tikz("figures/stagHuntContourDiagram.tex", height = 4, width = 4)
 
 layout(mat = matrix(c(0, 1, 2), 1, 3, byrow = TRUE), widths = c(1,5,1), heights = c(5, 5, 5), respect = TRUE)
 
@@ -161,7 +161,7 @@ dev.off()
 
 
 
-tikz("figures/hawkDovePhaseDiagram.tex", height = 4, width = 4)
+tikz("figures/hawkDoveContourDiagram.tex", height = 4, width = 4)
 
 # Hawk Dove
 
@@ -238,7 +238,7 @@ dev.off()
 
 
 
-tikz("figures/pureCoordinationPhaseDiagram.tex", height = 4, width = 4)
+tikz("figures/pureCoordinationContourDiagram.tex", height = 4, width = 4)
 
 layout(mat = matrix(c(0, 1, 2), 1, 3, byrow = TRUE), widths = c(1,5,1), heights = c(5, 5, 5), respect = TRUE)
 
@@ -311,7 +311,7 @@ dev.off()
 
 
 
-tikz("figures/invisibleHandPhaseDiagram.tex", height = 4, width = 4)
+tikz("figures/invisibleHandContourDiagram.tex", height = 4, width = 4)
 
 layout(mat = matrix(c(0, 1, 2), 1, 3, byrow = TRUE), widths = c(1,5,1), heights = c(5, 5, 5), respect = TRUE)
 
@@ -419,7 +419,7 @@ dev.off()
 
 # it would be extremely convenient to produce a script that can make *arbitrary* phase diagrams, given a particular angle theta. im not that far away TBH
 
-tikz("figures/impureCoordinationPhaseDiagram.tex", height = 4, width = 4)
+tikz("figures/impureCoordinationContourDiagram.tex", height = 4, width = 4)
 
 layout(mat = matrix(c(0, 1, 2), 1, 3, byrow = TRUE), widths = c(1,5,1), heights = c(5, 5, 5), respect = TRUE)
 
@@ -589,7 +589,7 @@ dev.off()
 
 
 
-tikz("figures/fourGamePhaseDiagram.tex", width = 6.5, height = 6.5 * 6/6.7)
+tikz("figures/fourGameContourDiagram.tex", width = 6.5, height = 6.5 * 6/6.7)
 
 
 layout(matrix(c(1, 2, 5,
@@ -772,7 +772,7 @@ polygon(c(0, 0, 1, 1), c(0, 1, 1, 0))
 
 # Invisible Hand
 
-m <- (-4)
+m <- (-3.9)
 n <- -m * k/(1-k)
 phi <- n/(n-m)
 
