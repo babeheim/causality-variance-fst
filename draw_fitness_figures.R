@@ -8,7 +8,7 @@ k <- 0.6 # equilibrium p-tilde
 
 text_size <- 0.7
 
-xlabs <- "group $j$ frequency of \\textcolor[HTML]{00AFB9}{A}, $x_j$"
+xlabs <- "group $j$ frequency of \\textcolor[HTML]{00AFB9}{$A$}, $x_j$"
 ylabs <- "individual fitness, $w_{ij}$"
 
 
@@ -38,6 +38,78 @@ mtext("$b$", side = 4, line = 1.0, at = w0 + b/2 - c, las = 1)
 mtext("$\\underbrace{\\hspace{3cm}}$", side = 4, line = -0.5, at = w0 + b/2 - c)
 
 dev.off()
+
+
+
+tikz("figures/nPersonSynergyPayoffs.tex", height = 3, width = 6)
+
+N <- 100
+G <- 1 # multiplier on individual investment on public good
+P <- 500 # club good output if everyone's in A club 
+Q <- 400 # club good output if everyone's in the B club
+c <- 2 # marginal cost to individual for cooperating 
+w0 <- 2
+
+par(mfrow = c(1, 2))
+
+par(mar = c(5.1, 4.1, 4.1, 4.1))
+
+# aggregate production functions
+plot(NULL, xlim = c(0, N), ylim = c(0, P + G * N),
+  frame.plot = FALSE, xaxt = "n", yaxt = "n",
+  xaxs = "i", yaxs = "i",
+  xlab = "total group investment in \\textcolor[HTML]{00AFB9}{$A$}, $X$", ylab = "aggregate production")
+axis(1, at = c(0, N), labels = c("$0$", "$N$"))
+axis(2, at = c(0, Q), labels = c("$0$", "$Q$"), las = 1)
+axis(4, at = c(-1000, G*N, P + G*N), labels = c(NA, "$bN$", "$P'$"), las = 1)
+curve(P * x^2/N^2 + G * x, from = 0, to = N, col = A_col, add = TRUE)
+curve(Q * (N - x)^2/N^2 + G * x, add = TRUE, col = B_col)
+curve(G * x, add = TRUE, lty = 2)
+
+par(mar = c(5.1, 4.1, 4.1, 4.1))
+
+# per-person payoffs
+# curve(w0 + P/N * x - c + G * x, from = 0, to = 1, col = "blue")
+# curve(w0 + Q/N * (1 - x) + G * x, add = TRUE, col = "red")
+
+m <- G + P/N
+n <- G - Q/N
+k <- (c * N + Q) / (P + Q)
+wt <- w0 + G * k + Q/N * (1-k)
+
+a <- wt + (1 - k) * m
+b <- wt - k * m
+c <- wt + (1 - k) * n
+d <- wt - k * n
+
+
+xlabs_N <- "group frequency of \\textcolor[HTML]{00AFB9}{$A$}, $p$"
+ylabs_N <- "individual fitness, $w_{i}$"
+
+plot(NULL, axes = FALSE, xlim = c(0, 1), ylim = c(b, a), xlab = xlabs_N, ylab = ylabs_N, xaxs = "i", yaxs = "i")
+lines(c(0, 1), c(b, a), col = A_col)
+lines(c(0, 1), c(d, c), col = B_col)
+
+lines(c(k, k), c(b, wt), lty = 2, col = col_alpha("black", 0.3))
+lines(c(0, 1), c(wt, wt), lty = 2, col = col_alpha("black", 0.3))
+
+axis(1, at = c(0, k, 1), labels = c("0", "$k$", "1"))
+axis(2, at = c(-1000, wt, 1000), labels = c(NA, "$\\tilde{w}$", NA), tick = TRUE, las = 1)
+points(k, wt, cex = 1, pch = 16)
+
+mtext("$kn$", side = 2, line = 1, at = wt - k*n/2, las = 0)
+mtext("$\\overbrace{\\hspace{1.0cm}}$", side = 2, line = 0, at = wt - k*n/2)
+
+mtext("$(1-k)m$", side = 4, line = 0.5, at = wt + (1-k)*m/2, las = 0)
+mtext("$\\underbrace{\\hspace{1.2cm}}$", side = 4, line = -0.7, at = wt + (1-k)*m/2)
+
+text(0.25, wt + (0.25 - k) * n + 0.2, labels = "$x_{i}=0$", col = B_col, srt = atan(0.15 * n) * 360/(2*pi))
+
+text(0.25, wt + (0.25 - k) * m + 0.25, labels = "$x_{i}=1$", col = A_col, srt = atan(0.15 * m) * 360/(2*pi))
+
+
+dev.off()
+
 
 
 
